@@ -33,13 +33,13 @@ export BEBBER_PUBLIC=Pfad zu Public Ordner
 1. Installiere go
 2. Setze Umgebungsvariable GOPATH.
 3. Installiere Packages
-   ```bash
-   go get github.com/rrawrriw/kleber
-   go get github.com/rrawrriw/bebber
-   go get github.com/gin-gonic/gin
-   go get gopkg.in/mgo.v2
-   ```
+```bash
+go get github.com/rrawrriw/kleber
+go get github.com/rrawrriw/bebber
+go get github.com/gin-gonic/gin
+go get gopkg.in/mgo.v2
+```
 4.  Kompiliere und installiere 
-    ```bash
-    go install github.com/rrawrriw/kleber
-    ```
+```bash
+go install github.com/rrawrriw/kleber
+```
