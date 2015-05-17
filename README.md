@@ -29,7 +29,7 @@ export BEBBER_PUBLIC=Pfad zu Public Ordner
 ./kleber
 ```
 
-## Selber machen
+## Kleber selber machen
 1. Installiere go
 2. Setze Umgebungsvariable GOPATH.
 3. Installiere Packages
