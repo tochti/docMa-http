@@ -33,8 +33,9 @@ func StartAccServer() {
   router := gin.Default()
   htmlDir := path.Join(bebber.GetSettings("BEBBER_PUBLIC"), "html")
   router.Use(bebber.Serve("/", bebber.LocalFile(htmlDir, false)))
-  router.POST("/LoadAccFiles", bebber.LoadAccFiles)
+  router.GET("/LoadAccFiles", bebber.LoadAccFiles)
   router.Static("/public", bebber.GetSettings("BEBBER_PUBLIC"))
+  router.Static("/data", bebber.GetSettings("BEBBER_ACC_DATA"))
   serverStr := bebber.GetSettings("BEBBER_IP") +":"+
                bebber.GetSettings("BEBBER_PORT")
   router.Run(serverStr)
