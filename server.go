@@ -9,9 +9,12 @@ import (
 
 func main() {
   acc := flag.Bool("steuerberater", false, "Start Server für Steuerberater")
+  valid := flag.Bool("valid", false, "Prüft ob für alle Buchungsätze eine Datei vorhanden ist")
   flag.Parse()
-  if *acc {
-    StartAccServer()
+  if *acc && *valid{
+    StartAccServer(true)
+  } else if *acc && *valid {
+    StartAccServer(false)
   } else {
     StartDefaultServer()
   }
@@ -29,9 +32,10 @@ func StartDefaultServer () {
   router.Run(serverStr)
 }
 
-func StartAccServer() {
+func StartAccServer(valid bool) {
   router := gin.Default()
   htmlDir := path.Join(bebber.GetSettings("BEBBER_PUBLIC"), "html")
+  router.Use(validCSV(valid))
   router.Use(bebber.Serve("/", bebber.LocalFile(htmlDir, false)))
   router.GET("/LoadAccFiles", bebber.LoadAccFiles)
   router.Static("/public", bebber.GetSettings("BEBBER_PUBLIC"))
@@ -39,5 +43,12 @@ func StartAccServer() {
   serverStr := bebber.GetSettings("BEBBER_IP") +":"+
                bebber.GetSettings("BEBBER_PORT")
   router.Run(serverStr)
+}
+
+func validCSV(valid bool) gin.HandlerFunc {
+  return func (c *gin.Context) {
+    c.Set("validCSV", valid)
+    c.Next()
+  }
 }
 
