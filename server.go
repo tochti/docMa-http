@@ -13,7 +13,7 @@ func main() {
   flag.Parse()
   if *acc && *valid{
     StartAccServer(true)
-  } else if *acc && *valid {
+  } else if *acc {
     StartAccServer(false)
   } else {
     StartDefaultServer()
