@@ -24,8 +24,11 @@ func StartDefaultServer () {
   router := gin.Default()
   htmlDir := path.Join(bebber.GetSettings("BEBBER_PUBLIC"), "html")
   router.Use(bebber.Serve("/", bebber.LocalFile(htmlDir, false)))
-  router.POST("/LoadDir", bebber.LoadDir)
-  router.POST("/AddTags", bebber.AddTags)
+  router.GET("/LoadBox/:boxname", bebber.Auth(), bebber.LoadBox)
+  router.POST("/AddTags", bebber.Auth(), bebber.AddTags)
+  router.GET("/User/:name", bebber.Auth(), bebber.GetUser)
+  router.POST("/MoveFile", bebber.Auth(), bebber.MoveFile)
+  router.POST("/Login", bebber.Login)
   router.Static("/public", bebber.GetSettings("BEBBER_PUBLIC"))
   serverStr := bebber.GetSettings("BEBBER_IP") +":"+
                bebber.GetSettings("BEBBER_PORT")
