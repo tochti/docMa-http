@@ -76,7 +76,7 @@ func SetupDefault() (bebber.Config, bebber.MongoDBConn) {
   config["FILES_DIR"] = bebber.GetSettings("BEBBER_FILES")
   config["PUBLIC_DIR"] = bebber.GetSettings("BEBBER_PUBLIC")
   config["HTTP_HOST"] = bebber.GetSettings("BEBBER_IP")
-  config["HTTP_IP"] = bebber.GetSettings("BEBBER_PORT")
+  config["HTTP_PORT"] = bebber.GetSettings("BEBBER_PORT")
   config["MONGODB_HOST"] = bebber.GetSettings("BEBBER_DB_SERVER")
   config["MONGODB_DBNAME"] = bebber.GetSettings("BEBBER_DB_NAME")
 
