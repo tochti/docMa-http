@@ -28,14 +28,16 @@ func StartDefaultServer () {
   config, db := SetupDefault()
   globals := bebber.Globals{Config: config, MongoDB: db}
 
-  auth := bebber.MakeGlobalsHandler(bebber.Auth, globals)
+  authHandler := bebber.MakeGlobalsHandler(bebber.Auth, globals)
+  searchHandler := bebber.MakeGlobalsHandler(bebber.SearchHandler, globals)
 
   router := gin.Default()
 
   htmlDir := path.Join(config["PUBLIC_DIR"], "html")
   router.Use(bebber.Serve("/", bebber.LocalFile(htmlDir, false)))
-  router.GET("/User/:name", auth, bebber.GetUser)
+  router.GET("/User/:name", authHandler, bebber.GetUser)
   router.POST("/Login", bebber.Login)
+  router.POST("/Search", authHandler, searchHandler)
   router.Static("/public", config["PUBLIC_DIR"])
   serverStr := config["HTTP_HOST"] +":"+ config["HTTP_PORT"]
 
