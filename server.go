@@ -30,17 +30,18 @@ func StartDefaultServer () {
 
   authHandler := bebber.MakeGlobalsHandler(bebber.Auth, globals)
   searchHandler := bebber.MakeGlobalsHandler(bebber.SearchHandler, globals)
+  userHandler := bebber.MakeGlobalsHandler(bebber.UserHandler, globals)
 
   router := gin.Default()
 
   htmlDir := path.Join(config["PUBLIC_DIR"], "html")
   router.Use(bebber.Serve("/", bebber.LocalFile(htmlDir, false)))
-  router.GET("/User/:name", authHandler, bebber.GetUser)
+  router.GET("/User/:name", authHandler, userHandler)
   router.POST("/Login", bebber.Login)
   router.POST("/Search", authHandler, searchHandler)
   router.Static("/public", config["PUBLIC_DIR"])
-  serverStr := config["HTTP_HOST"] +":"+ config["HTTP_PORT"]
 
+  serverStr := config["HTTP_HOST"] +":"+ config["HTTP_PORT"]
   router.Run(serverStr)
 
   //router.GET("/LoadBox/:boxname", bebber.Auth(), bebber.LoadBox)
