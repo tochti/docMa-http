@@ -28,17 +28,35 @@ func StartDefaultServer () {
   config, db := SetupDefault()
   globals := bebber.Globals{Config: config, MongoDB: db}
 
-  authHandler := bebber.MakeGlobalsHandler(bebber.Auth, globals)
-  searchHandler := bebber.MakeGlobalsHandler(bebber.SearchHandler, globals)
-  userHandler := bebber.MakeGlobalsHandler(bebber.UserHandler, globals)
+  makeGlobalsHandler := bebber.MakeGlobalsHandler
+  authHandler := makeGlobalsHandler(bebber.Auth, globals)
+  loginHandler := makeGlobalsHandler(bebber.LoginHandler, globals)
+  searchHandler := makeGlobalsHandler(bebber.SearchHandler, globals)
+  userHandler := makeGlobalsHandler(bebber.UserHandler, globals)
+  docMakeHandler := makeGlobalsHandler(bebber.DocMakeHandler, globals)
+  docReadHandler := makeGlobalsHandler(bebber.DocReadHandler, globals)
+  docChangeHandler := makeGlobalsHandler(bebber.DocChangeHandler, globals)
+  docRemoveHandler := makeGlobalsHandler(bebber.DocRemoveHandler, globals)
+  docRenameHandler := makeGlobalsHandler(bebber.DocRenameHandler, globals)
+  docAppendLabelsHandler := makeGlobalsHandler(bebber.DocAppendLabelsHandler, globals)
+  docRemoveLabelsHandler := makeGlobalsHandler(bebber.DocRemoveLabelHandler, globals)
+  readDocFileHandler := makeGlobalsHandler(bebber.ReadDocFileHandler, globals)
 
   router := gin.Default()
 
   htmlDir := path.Join(config["PUBLIC_DIR"], "html")
   router.Use(bebber.Serve("/", bebber.LocalFile(htmlDir, false)))
   router.GET("/User/:name", authHandler, userHandler)
-  router.POST("/Login", bebber.Login)
+  router.POST("/Login", loginHandler)
   router.POST("/Search", authHandler, searchHandler)
+  router.POST("/Doc", authHandler, docMakeHandler)
+  router.GET("/Doc/:name", authHandler, docReadHandler)
+  router.PATCH("/Doc", authHandler, docChangeHandler)
+  router.DELETE("/Doc/:name", authHandler, docRemoveHandler)
+  router.PATCH("/DocRename", authHandler, docRenameHandler)
+  router.PATCH("/DocLabels", authHandler, docAppendLabelsHandler)
+  router.DELETE("/DocLabels/:name/:label", authHandler, docRemoveLabelsHandler)
+  router.GET("/ReadDocFile/:name", authHandler, readDocFileHandler)
   router.Static("/public", config["PUBLIC_DIR"])
 
   serverStr := config["HTTP_HOST"] +":"+ config["HTTP_PORT"]
@@ -51,6 +69,7 @@ func StartDefaultServer () {
 }
 
 func StartAccServer(valid bool) {
+  /*
   router := gin.Default()
   htmlDir := path.Join(bebber.GetSettings("BEBBER_PUBLIC"), "html")
   router.Use(validCSV(valid))
@@ -61,6 +80,7 @@ func StartAccServer(valid bool) {
   serverStr := bebber.GetSettings("BEBBER_IP") +":"+
                bebber.GetSettings("BEBBER_PORT")
   router.Run(serverStr)
+  */
 }
 
 func validCSV(valid bool) gin.HandlerFunc {
