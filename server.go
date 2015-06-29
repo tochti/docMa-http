@@ -40,7 +40,11 @@ func StartDefaultServer () {
   docRenameHandler := makeGlobalsHandler(bebber.DocRenameHandler, globals)
   docAppendLabelsHandler := makeGlobalsHandler(bebber.DocAppendLabelsHandler, globals)
   docRemoveLabelsHandler := makeGlobalsHandler(bebber.DocRemoveLabelHandler, globals)
+  accProcessMakeHandler := makeGlobalsHandler(bebber.AccProcessMakeHandler, globals)
+  accProcessFindByDocNumberHandler := makeGlobalsHandler(bebber.AccProcessFindByDocNumberHandler, globals)
+  accProcessFindByAccNumberHandler := makeGlobalsHandler(bebber.AccProcessFindByAccNumberHandler, globals)
   readDocFileHandler := makeGlobalsHandler(bebber.ReadDocFileHandler, globals)
+
 
   router := gin.Default()
 
@@ -56,6 +60,9 @@ func StartDefaultServer () {
   router.PATCH("/DocRename", authHandler, docRenameHandler)
   router.PATCH("/DocLabels", authHandler, docAppendLabelsHandler)
   router.DELETE("/DocLabels/:name/:label", authHandler, docRemoveLabelsHandler)
+  router.POST("/AccProcess", authHandler, accProcessMakeHandler)
+  router.GET("/AccProcess/FindByDocNumber/:number", authHandler, accProcessFindByDocNumberHandler)
+  router.GET("/AccProcess/FindByAccNumber/:from/:to/:number", authHandler, accProcessFindByAccNumberHandler)
   router.GET("/ReadDocFile/:name", authHandler, readDocFileHandler)
   router.Static("/public", config["PUBLIC_DIR"])
 
