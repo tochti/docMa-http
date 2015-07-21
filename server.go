@@ -46,6 +46,9 @@ func StartDefaultServer () {
   accProcessFindByDocNumberHandler := makeGlobalsHandler(bebber.AccProcessFindByDocNumberHandler, globals)
   accProcessFindByAccNumberHandler := makeGlobalsHandler(bebber.AccProcessFindByAccNumberHandler, globals)
   readDocFileHandler := makeGlobalsHandler(bebber.ReadDocFileHandler, globals)
+  docNumberProposalCurrHandler := makeGlobalsHandler(bebber.DocNumberProposalCurrHandler, globals)
+  docNumberProposalChangeHandler := makeGlobalsHandler(bebber.DocNumberProposalChangeHandler, globals)
+  docNumberProposalNextHandler := makeGlobalsHandler(bebber.DocNumberProposalNextHandler, globals)
 
 
   router := gin.Default()
@@ -68,6 +71,9 @@ func StartDefaultServer () {
   router.GET("/AccProcess/FindByDocNumber/:number", authHandler, accProcessFindByDocNumberHandler)
   router.GET("/AccProcess/FindByAccNumber/:from/:to/:number", authHandler, accProcessFindByAccNumberHandler)
   router.GET("/ReadDocFile/:name", authHandler, readDocFileHandler)
+  router.GET("/DocNumberProposal", authHandler, docNumberProposalCurrHandler)
+  router.GET("/DocNumberProposal/Next", authHandler, docNumberProposalNextHandler)
+  router.PUT("/DocNumberProposal", authHandler, docNumberProposalChangeHandler)
   router.Static("/public", config["PUBLIC_DIR"])
 
   serverStr := config["HTTP_HOST"] +":"+ config["HTTP_PORT"]
