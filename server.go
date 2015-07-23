@@ -31,7 +31,7 @@ func StartDefaultServer () {
   makeGlobalsHandler := bebber.MakeGlobalsHandler
   authHandler := makeGlobalsHandler(bebber.Auth, globals)
   loginHandler := makeGlobalsHandler(bebber.LoginHandler, globals)
-  searchHandler := makeGlobalsHandler(bebber.SearchHandler, globals)
+  searchDocsHandler := makeGlobalsHandler(bebber.SearchDocsHandler, globals)
   userHandler := makeGlobalsHandler(bebber.UserHandler, globals)
   docMakeHandler := makeGlobalsHandler(bebber.DocMakeHandler, globals)
   docReadHandler := makeGlobalsHandler(bebber.DocReadHandler, globals)
@@ -57,7 +57,7 @@ func StartDefaultServer () {
   router.Use(bebber.Serve("/", bebber.LocalFile(htmlDir, false)))
   router.GET("/User/:name", authHandler, userHandler)
   router.POST("/Login", loginHandler)
-  router.POST("/Search", authHandler, searchHandler)
+  router.POST("/SearchDocs", authHandler, searchDocsHandler)
   router.POST("/Doc", authHandler, docMakeHandler)
   router.GET("/Doc/:name", authHandler, docReadHandler)
   router.PATCH("/Doc", authHandler, docChangeHandler)
